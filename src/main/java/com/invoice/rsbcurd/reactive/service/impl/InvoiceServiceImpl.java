@@ -7,7 +7,6 @@ import com.invoice.rsbcurd.reactive.model.Invoice;
 import com.invoice.rsbcurd.reactive.repo.InvoiceRepository;
 import com.invoice.rsbcurd.reactive.service.IInvoiceService;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +34,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		log.info("InvoiceServiceImpl: getOneInvoice id:{}",id);
 		return repo.findById(id).switchIfEmpty(Mono.empty());
 	}
-	 @CircuitBreaker(name = BACKEND_C, fallbackMethod = "monoFallback")
 	public Mono<Void> deleteInvoice(Integer id){
 		log.info("InvoiceServiceImpl: deleteInvoice id:{}",id);
 		return repo.deleteById(id);
