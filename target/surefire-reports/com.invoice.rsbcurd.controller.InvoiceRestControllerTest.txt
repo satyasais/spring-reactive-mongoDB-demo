@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.invoice.rsbcurd.controller.InvoiceRestControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.89 s - in com.invoice.rsbcurd.controller.InvoiceRestControllerTest

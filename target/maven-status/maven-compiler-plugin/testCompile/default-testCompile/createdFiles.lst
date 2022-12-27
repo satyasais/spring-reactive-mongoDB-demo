@@ -1,0 +1,9 @@
+com\invoice\rsbcurd\service\impl\InvoiceServiceImplTest.class
+com\invoice\rsbcurd\controller\InvoiceRestControllerTest.class
+com\invoice\rsbcurd\controller\IndexControllerTest.class
+com\invoice\rsbcurd\kafkatest\KafkaProducerTest.class
+com\invoice\rsbcurd\InvoiceServicesApplicationTests.class
+com\invoice\rsbcurd\controller\AuthenticationRestTest.class
+com\invoice\rsbcurd\reactive\service\UserServiceTest.class
+com\invoice\rsbcurd\kafkatest\KafkaConsumerTest.class
+com\invoice\rsbcurd\controller\ResourceRestTest.class

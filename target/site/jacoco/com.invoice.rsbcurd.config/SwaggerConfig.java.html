@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwaggerConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">invoice</a> &gt; <a href="index.source.html" class="el_package">com.invoice.rsbcurd.config</a> &gt; <span class="el_source">SwaggerConfig.java</span></div><h1>SwaggerConfig.java</h1><pre class="source lang-java linenums">package com.invoice.rsbcurd.config;
+
+
+
+import static com.invoice.rsbcurd.constants.SwaggerConstant.API_DESCRIPTION;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.API_TITLE;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.API_VERSION;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.CONTACT_EMAIL;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.CONTACT_NAME;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.CONTACT_URL;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.LICENSE;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.LICENSE_URL;
+import static com.invoice.rsbcurd.constants.SwaggerConstant.TERM_OF_SERVICE;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+/**
+ * This class is used for managing Swagger API configuration
+ *
+ */
+@Configuration
+@EnableSwagger2
+<span class="fc" id="L39">public class SwaggerConfig {</span>
+	
+	 public static final String AUTHORIZATION_HEADER = &quot;Authorization&quot;;
+	  
+	    private ApiInfo apiInfo() {
+<span class="fc" id="L44">	        return new ApiInfo(API_TITLE, API_DESCRIPTION, API_VERSION, TERM_OF_SERVICE, contact(),</span>
+<span class="fc" id="L45">	                LICENSE, LICENSE_URL, Collections.emptyList());</span>
+	    }
+
+	    private Contact contact() {
+<span class="fc" id="L49">	        return new Contact(CONTACT_NAME, CONTACT_URL, CONTACT_EMAIL);</span>
+	    }
+
+	    @Bean
+	       public Docket api() { 
+<span class="fc" id="L54">	           return new Docket(DocumentationType.SWAGGER_2)</span>
+<span class="fc" id="L55">	        	  .apiInfo(apiInfo())</span>
+<span class="fc" id="L56">	        		      .securityContexts(Arrays.asList(securityContext()))</span>
+<span class="fc" id="L57">	        		      .securitySchemes(Arrays.asList(apiKey()))</span>
+<span class="fc" id="L58">	             .select()                                  </span>
+<span class="fc" id="L59">	             .apis(RequestHandlerSelectors.any())              </span>
+<span class="fc" id="L60">	             .paths(PathSelectors.any())                          </span>
+<span class="fc" id="L61">	             .build();                                           </span>
+	       }
+		   
+		   
+		   private ApiKey apiKey() { 
+<span class="fc" id="L66">			    return new ApiKey(&quot;JWT&quot;, AUTHORIZATION_HEADER, &quot;header&quot;); </span>
+			}
+		   
+		   private List&lt;SecurityReference&gt; defaultAuth() { 
+<span class="fc" id="L70">			    AuthorizationScope authorizationScope = new AuthorizationScope(&quot;global&quot;, &quot;accessEverything&quot;); </span>
+<span class="fc" id="L71">			    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1]; </span>
+<span class="fc" id="L72">			    authorizationScopes[0] = authorizationScope; </span>
+<span class="fc" id="L73">			    return Arrays.asList(new SecurityReference(&quot;JWT&quot;, authorizationScopes)); </span>
+			}
+		   
+		   private SecurityContext securityContext() { 
+<span class="fc" id="L77">			    return SecurityContext.builder().securityReferences(defaultAuth()).build(); </span>
+			}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

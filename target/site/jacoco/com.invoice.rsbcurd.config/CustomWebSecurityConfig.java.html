@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomWebSecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">invoice</a> &gt; <a href="index.source.html" class="el_package">com.invoice.rsbcurd.config</a> &gt; <span class="el_source">CustomWebSecurityConfig.java</span></div><h1>CustomWebSecurityConfig.java</h1><pre class="source lang-java linenums">package com.invoice.rsbcurd.config;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
+@AllArgsConstructor
+@EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
+<span class="fc" id="L19">@Slf4j</span>
+public class CustomWebSecurityConfig  {
+	
+	private AuthenticationManager authenticationManager;
+    private SecurityContextRepository securityContextRepository;
+    
+    
+    @Bean
+    public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
+<span class="fc" id="L28">    	log.info(&quot;securitygWebFilterChain:&quot;);</span>
+<span class="fc" id="L29">        return http</span>
+<span class="fc" id="L30">                .exceptionHandling()</span>
+<span class="fc" id="L31">                .authenticationEntryPoint((swe, e) -&gt; </span>
+<span class="nc" id="L32">                    Mono.fromRunnable(() -&gt; swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED))</span>
+<span class="fc" id="L33">                ).accessDeniedHandler((swe, e) -&gt; </span>
+<span class="nc" id="L34">                    Mono.fromRunnable(() -&gt; swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN))</span>
+<span class="fc" id="L35">                ).and()</span>
+<span class="fc" id="L36">                .csrf().disable().cors().and()</span>
+<span class="fc" id="L37">                .formLogin().disable()</span>
+<span class="fc" id="L38">                .httpBasic().disable()</span>
+<span class="fc" id="L39">                .authenticationManager(authenticationManager)</span>
+<span class="fc" id="L40">                .securityContextRepository(securityContextRepository)</span>
+<span class="fc" id="L41">                .authorizeExchange()</span>
+<span class="fc" id="L42">                .pathMatchers(HttpMethod.OPTIONS).permitAll()</span>
+<span class="fc" id="L43">                .pathMatchers(&quot;/login&quot;,&quot;/v2/api-docs&quot;,</span>
+                        &quot;/swagger-ui/**&quot;,
+                        &quot;/swagger-resources/**&quot;,
+                        &quot;/*/swagger-resources/**&quot;,
+<span class="fc" id="L47">                        &quot;/*/v2/api-docs&quot;).permitAll()</span>
+<span class="fc" id="L48">                .anyExchange().authenticated()</span>
+<span class="fc" id="L49">                .and().build();</span>
+    }
+    
+	    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

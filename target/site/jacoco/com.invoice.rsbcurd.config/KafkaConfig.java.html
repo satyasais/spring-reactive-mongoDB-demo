@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KafkaConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">invoice</a> &gt; <a href="index.source.html" class="el_package">com.invoice.rsbcurd.config</a> &gt; <span class="el_source">KafkaConfig.java</span></div><h1>KafkaConfig.java</h1><pre class="source lang-java linenums">package com.invoice.rsbcurd.config;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+
+@EnableKafka
+@Configuration
+<span class="fc" id="L21">public class KafkaConfig {</span>
+	
+	
+	
+	@Bean
+    public ProducerFactory&lt;String, String&gt; producerFactory()
+    {
+  
+<span class="fc" id="L29">        Map&lt;String, Object&gt; config = new HashMap&lt;&gt;();</span>
+  
+<span class="fc" id="L31">        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,</span>
+                   &quot;127.0.0.1:9092&quot;);
+<span class="fc" id="L33">        config.put(ConsumerConfig.GROUP_ID_CONFIG,</span>
+                   &quot;group_id&quot;);
+<span class="fc" id="L35">        config.put(</span>
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+            StringDeserializer.class);
+<span class="fc" id="L38">        config.put(</span>
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+            StringDeserializer.class);
+  
+<span class="fc" id="L42">        return new DefaultKafkaProducerFactory&lt;&gt;(config);</span>
+    }
+	
+	  @Bean
+	  public KafkaTemplate&lt;String, String&gt; kafkaTemplate() {
+<span class="fc" id="L47">	    return new KafkaTemplate&lt;&gt;(producerFactory());</span>
+	  }
+	
+	
+	
+	
+	@Bean
+    public ConsumerFactory&lt;String, String&gt; consumerFactory()
+    {
+  
+<span class="fc" id="L57">        Map&lt;String, Object&gt; config = new HashMap&lt;&gt;();</span>
+  
+<span class="fc" id="L59">        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,</span>
+                   &quot;127.0.0.1:9092&quot;);
+<span class="fc" id="L61">        config.put(ConsumerConfig.GROUP_ID_CONFIG,</span>
+                   &quot;group_id&quot;);
+<span class="fc" id="L63">        config.put(</span>
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+            StringDeserializer.class);
+<span class="fc" id="L66">        config.put(</span>
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+            StringDeserializer.class);
+  
+<span class="fc" id="L70">        return new DefaultKafkaConsumerFactory&lt;&gt;(config);</span>
+    }
+  
+    @SuppressWarnings(&quot;rawtypes&quot;)
+    @Bean
+	public ConcurrentKafkaListenerContainerFactory
+	kafkaListenerContainerFactory()
+    {
+        ConcurrentKafkaListenerContainerFactory&lt;
+<span class="fc" id="L79">            String, String&gt; factory</span>
+            = new ConcurrentKafkaListenerContainerFactory&lt;&gt;();
+<span class="fc" id="L81">        factory.setConsumerFactory(consumerFactory());</span>
+<span class="fc" id="L82">        return factory;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

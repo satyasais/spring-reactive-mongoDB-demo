@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PBKDF2Encoder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">invoice</a> &gt; <a href="index.source.html" class="el_package">com.invoice.rsbcurd.config</a> &gt; <span class="el_source">PBKDF2Encoder.java</span></div><h1>PBKDF2Encoder.java</h1><pre class="source lang-java linenums">package com.invoice.rsbcurd.config;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+@Component
+<span class="fc" id="L13">public class PBKDF2Encoder implements PasswordEncoder {</span>
+	
+	@Value(&quot;${springbootwebfluxjjwt.password.encoder.secret}&quot;)
+    private String secret;
+
+    @Value(&quot;${springbootwebfluxjjwt.password.encoder.iteration}&quot;)
+    private Integer iteration;
+
+    @Value(&quot;${springbootwebfluxjjwt.password.encoder.keylength}&quot;)
+    private Integer keylength;
+
+    /**
+     * More info (https://www.owasp.org/index.php/Hashing_Java) 404 :(
+     * @param cs password
+     * @return encoded password
+     */
+    @Override
+    public String encode(CharSequence cs) {
+        try {
+<span class="nc" id="L32">            byte[] result = SecretKeyFactory.getInstance(&quot;PBKDF2WithHmacSHA512&quot;)</span>
+<span class="nc" id="L33">                                            .generateSecret(new PBEKeySpec(cs.toString().toCharArray(), secret.getBytes(), iteration, keylength))</span>
+<span class="nc" id="L34">                                            .getEncoded();</span>
+<span class="nc" id="L35">            return Base64.getEncoder().encodeToString(result);</span>
+<span class="nc" id="L36">        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {</span>
+<span class="nc" id="L37">            throw new RuntimeException(ex);</span>
+        }
+    }
+
+    @Override
+    public boolean matches(CharSequence cs, String string) {
+<span class="nc" id="L43">        return encode(cs).equals(string);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

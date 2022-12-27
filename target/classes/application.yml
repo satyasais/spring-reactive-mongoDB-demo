@@ -1,0 +1,54 @@
+server:
+     port: 8080
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: reactivedb
+  main:
+    web-application-type: reactive
+  #  allow-bean-definition-overriding: true
+#  config:
+#    import: configserver:http://localhost:8888
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#          client-id: "114393861813-am398d010thiggdnmb1kpiqu1m6han1k.apps.googleusercontent.com"
+#          client-secret: "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"
+
+resilience4j:
+  retry:
+    instances:
+      myRetry:
+        max-attempts: 3
+        wait-duration: 5s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions: org.springframework.web.client.RestClientException
+        ignore-exceptions: org.springframework.web.client.HttpClientErrorException
+         
+circuitbreaker:
+  instances:
+      myCircuitBreaker:
+       wait-duration-in-open-state: 1m
+       permitted-number-of-calls-in-half-open-state: 3
+       sliding-window-type: count-based
+       sliding-window-size: 5
+       minimum-number-of-calls: 5
+       slow-call-duration-threshold: 10s
+       slow-call-rate-threshold: 60
+       failure-rate-threshold: 60
+       
+springbootwebfluxjjwt:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      keylength: 256
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength
+    expiration: 28800
