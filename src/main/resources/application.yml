@@ -1,7 +1,9 @@
 server:
-     port: 8080
-
+     port: 8089
+     
 spring:
+  application:
+    name: invoice
   data:
     mongodb:
       host: localhost
@@ -19,6 +21,16 @@ spring:
 #          google:
 #          client-id: "114393861813-am398d010thiggdnmb1kpiqu1m6han1k.apps.googleusercontent.com"
 #          client-secret: "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"
+
+eureka:
+ client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+ server:
+    wait-time-in-ms-when-sync-empty: 30
+    enableSelfPreservation: false
+ instance:
+    preferIpAddress: true
 
 resilience4j:
   retry:
