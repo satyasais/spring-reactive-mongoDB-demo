@@ -1,4 +1,4 @@
-# spring-reactive-demo-2022
+# spring-reactive-demo
 
 # Normal Springboot VS Reactive Spring boot
 
